@@ -1,0 +1,17 @@
+// Adicione estes imports no EmprestimoController:
+// import org.springframework.web.bind.annotation.PutMapping;
+// import org.springframework.web.bind.annotation.PathVariable;
+// import java.time.LocalDate;
+// import org.springframework.http.ResponseEntity;
+
+// E adicione este método dentro da classe EmprestimoController:
+
+@PutMapping("/{id}/devolver")
+public ResponseEntity<Emprestimo> devolver(@PathVariable Integer id) {
+    return emprestimoRepository.findById(id)
+        .map(emprestimo -> {
+            emprestimo.setData_devolucao(LocalDate.now());
+            return ResponseEntity.ok(emprestimoRepository.save(emprestimo));
+        })
+        .orElseGet(() -> ResponseEntity.notFound().build());
+}
